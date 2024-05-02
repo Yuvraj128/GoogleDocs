@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Doc Integration</title>
+    <script src="require.js"></script>
+    <style>
+        #main-div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #submit-btn{
+            font-size: 15px;
+            padding: 4px;
+            border-radius: 4px;
+            background-color: orange;
+            color: white;
+            margin-left: 5px;
+        }
+        #fileUrl{
+            padding: 4px;
+            font-size: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-div">
+            <input type="url" name="fileUrl" id="fileUrl">
+            <button id="submit-btn" onclick="getGoogleDoc()">Get Google Doc</button>
+    </div>
+    <div id="document"></div>
+    <script>
+        let getGoogleDoc = ()=>{
+            let docUrl = document.getElementById('fileUrl').value;
+            console.log('doc url is '+docUrl);
+            window.open(docUrl);
+        }
+        
+        
+
+
+    </script>
+</body>
+</html>
