@@ -9,17 +9,16 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            position: relative;
             font-family: Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif;;
         }
         #outer-div{
             width: 100vw;
             height: 100vh;
-            position: relative;
             display: flex;
         }
         #left-div{
-            min-width: 74%;
-            max-width: 75%;
+            min-width: 75%;
         }
         #right-div{
             width: 25%;
@@ -40,7 +39,7 @@
             color: white;
             cursor: pointer;
         }
-        #submit-btn:hover{
+        #submit-btn:hover,.arrow:hover{
             background-color: #025231;
 
         }
@@ -91,17 +90,50 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
           }
+          .arrow{
+            font-size: 20px;
+            font-weight: 500;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+            background: #00854d;
+            color: white;
+            border: 1px solid black;
+            position: absolute;
+            right: 5px;
+            top: 10px;
+            z-index: 100;
+          }
+
+          @keyframes close {
+            from{
+                width: 25%;
+            }
+            to{
+                width: 0%;
+                display: none;
+            }
+          }
+          
+          #right-arrow{
+            display: none;
+            
+          }
     </style>
 </head>
 <body>
     <div id="outer-div">
+        <span id="left-arrow" class="arrow" onclick="showHideSetting('hide')">&#8677;</span>
+        <span id="right-arrow" class="arrow" onclick="showHideSetting('show')">&#8676;</span>
         <div id="left-div" class="flex">
             <div id="loader" style="display: none;"></div>
             <iframe src="" frameborder="0" id="iframe-div" allowfullscreen></iframe>
             
             <span id="no-docs">No Docs To Display!!</span>
         </div>
+        
         <div id="right-div">
+            
             <span id="setting-span">&#9881; Settings</span>
             <div>
                 <label for="fileUrl">Enter Your Google Doc Url</label>
@@ -145,7 +177,24 @@
         }
         
         
-
+        function showHideSetting(flag){
+            let settingDiv = document.getElementById('right-div');
+            let leftArrow = document.getElementById('left-arrow');
+            let rightArrow = document.getElementById('right-arrow');
+            let leftDiv = document.getElementById('left-div');
+            if(flag==='hide'){
+                settingDiv.style.display = 'none';
+                leftArrow.style.display = 'none';
+                rightArrow.style.display = 'block';
+                leftDiv.style.width = '100%';
+            }
+            else{
+                settingDiv.style.display = 'block';
+                leftArrow.style.display = 'block';
+                rightArrow.style.display = 'none';
+                leftDiv.style.width = '75%';
+            }
+        }
 
     </script>
 </body>
