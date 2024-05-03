@@ -13,16 +13,37 @@
         }
         #submit-btn{
             font-size: 15px;
-            padding: 4px;
-            border-radius: 4px;
-            background-color: green;
+            border: 1px solid;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #00854d;
             color: white;
             margin-left: 5px;
+            cursor: pointer;
+        }
+        #submit-btn:hover{
+            background-color: #025231;
+
         }
         #fileUrl{
-            padding: 4px;
-            font-size: 15px;
-            border-radius: 4px;
+            align-items: center;
+            min-width: 200px;
+            position: relative;
+            display: flex;
+            margin: 0;
+            font-size: 14px;
+            color: #323338;
+            font-weight: 400;
+            padding-left: 6px;
+            padding-right: 3px;
+            border-radius: 6px;
+            border: 1px solid;
+            border-color: #d0d4e4;
+            height: 32px;
+        }
+        #fileUrl:focus{
+            outline-width: 0;
+            border-color: black;
         }
     </style>
 </head>
@@ -36,7 +57,7 @@
         let getGoogleDoc = ()=>{
             let docUrl = document.getElementById('fileUrl').value;
             console.log('doc url is '+docUrl);
-            window.open(docUrl,'_self');
+            window.open(docUrl,"_self");
         }
         
         
