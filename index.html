@@ -6,7 +6,27 @@
     <title>Google Doc Integration</title>
     <script src="require.js"></script>
     <style>
-        #main-div{
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Figtree, Roboto, Noto Sans Hebrew, Noto Kufi Arabic, Noto Sans JP, sans-serif;;
+        }
+        #outer-div{
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            display: flex;
+        }
+        #left-div{
+            width: 75%;
+        }
+        #right-div{
+            width: 25%;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        .flex{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,7 +38,6 @@
             border-radius: 6px;
             background-color: #00854d;
             color: white;
-            margin-left: 5px;
             cursor: pointer;
         }
         #submit-btn:hover{
@@ -27,10 +46,10 @@
         }
         #fileUrl{
             align-items: center;
-            min-width: 200px;
+            width: 90%;
             position: relative;
             display: flex;
-            margin: 0;
+            margin-bottom: 7px;
             font-size: 14px;
             color: #323338;
             font-weight: 400;
@@ -45,14 +64,34 @@
             outline-width: 0;
             border-color: black;
         }
+        #no-docs{
+            font-size: 20px;
+            color: #d0d4e4;
+        }
+        #setting-span{
+            font-size: 20px;
+            display: block;
+            margin-bottom: 32px;
+        }
     </style>
 </head>
 <body>
-    <div id="main-div">
-            <input type="url" name="fileUrl" id="fileUrl">
-            <button id="submit-btn" onclick="getGoogleDoc()">Get Google Doc</button>
+    <div id="outer-div">
+        <div id="left-div" class="flex">
+            <div id="document"></div>
+            <span id="no-docs">No Docs To Display!!</span>
+        </div>
+        <div id="right-div">
+            <span id="setting-span">&#9881; Settings</span>
+            <div>
+                <label for="fileUrl">Enter Your Google Doc Url</label>
+                <input type="url" name="fileUrl" id="fileUrl">
+                <button id="submit-btn" onclick="getGoogleDoc()">Get Google Doc</button>
+            </div>
+        </div>
     </div>
-    <div id="document"></div>
+    
+    
     <script>
         let getGoogleDoc = ()=>{
             let docUrl = document.getElementById('fileUrl').value;
