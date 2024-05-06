@@ -206,7 +206,7 @@
               .then(data => {
                 // Store access token and potentially refresh token securely
                 console.log('Access Token:'+ JSON.stringify(data));
-                if(data.access_token!=='undefined'){
+                if(data.access_token!==undefined){
                     console.log('access token is '+data.access_token);
                     token = data.access_token;
                     createGoogleDoc();
