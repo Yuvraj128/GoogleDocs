@@ -170,7 +170,7 @@
                 var code_receiver_uri = 'https://yuvraj128.github.io';
                 // Send auth code to your backend platform
                 const xhr = new XMLHttpRequest();
-                xhr.open('POST', code_receiver_uri, true);
+                xhr.open('GET', code_receiver_uri, true);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 xhr.onload = function() {
