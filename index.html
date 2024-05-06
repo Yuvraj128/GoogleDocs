@@ -160,7 +160,9 @@
             }
         }
 
+       
         var client;
+        let code;
         function initClient() {
             client = google.accounts.oauth2.initCodeClient({
             client_id: '795383790576-82j4h3lim7gh7h0l4pt17f54ba3eurjr.apps.googleusercontent.com',
@@ -175,21 +177,63 @@
                 //xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 //xhr.onload = function() {
                 //console.log('Signed in as: ' + xhr.responseText);
-                console.log('response is '+response);
+                console.log('response is '+JSON.stringify(response));
                 //}
                 //xhr.send('code=' + response.code);
-                // After receipt, the code is exchanged for an access token and
-                // refresh token, and the platform then updates this web app
-                // running in user's browser with the requested calendar info.
+                
+                code = response.code;
+                console.log('auth code is '+code);
+                requestAccessToken();
             },
             });
         }
-        function getAuthCode() {
-            // Request authorization code and obtain user consent
-            client.requestCode();
+
+        function requestAccessToken(){
+            console.log('authentication code is '+code);
+            let reqBody = {
+                client_id: '795383790576-82j4h3lim7gh7h0l4pt17f54ba3eurjr.apps.googleusercontent.com',
+                client_secret: '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',
+                code: code,
+                grant_type: 'authorization_code',
+                redirect_uri: 'https://yuvraj128.github.io'
+            }
+            fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                body: JSON.stringify(reqBody),
+              })
+              .then(response => response.json())
+              .then(data => {
+                // Store access token and potentially refresh token securely
+                console.log('Access Token:', data);
+              })
+              .catch(error => console.error(error));
         }
 
-        
+        async function getAuthCode() {
+            // Request authorization code and obtain user consent
+            client.requestCode();
+           /* await requestAccessToken();
+            console.log('code is '+code);
+            let createDocEndpoint = 'https://docs.googleapis.com/v1/documents';
+                fetch(createDocEndpoint,{
+                    method: "POST",
+                    headers:{
+                        'Authorization': `Bearer ${code}`
+                    }
+                })
+                .then((data)=>data.json())
+                .then(info=>{
+                    console.log('info is '+JSON.stringify(info));
+                })
+                .catch(error=>{
+                    console.log('error is '+error);
+                })
+
+                */
+        }
+       
+
+
         let getGoogleDoc = (val)=>{
             if(val==='false'){
                 docUrl = document.getElementById('fileUrl').value;
