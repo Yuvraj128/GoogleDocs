@@ -163,6 +163,7 @@
        
         var client;
         let code;
+        let token;
         function initClient() {
             client = google.accounts.oauth2.initCodeClient({
             client_id: '795383790576-82j4h3lim7gh7h0l4pt17f54ba3eurjr.apps.googleusercontent.com',
@@ -195,7 +196,7 @@
                 client_secret: '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',
                 code: code,
                 grant_type: 'authorization_code',
-                redirect_uri: 'https://yuvraj128.github.io'
+                redirect_uri: 'https://forum.developernation.net/g'
             }
             fetch('https://oauth2.googleapis.com/token', {
                 method: 'POST',
@@ -204,10 +205,40 @@
               .then(response => response.json())
               .then(data => {
                 // Store access token and potentially refresh token securely
-                console.log('Access Token:', data);
+                console.log('Access Token:'+ JSON.stringify(data));
+                if(data.access_token!=='undefined'){
+                    token = data.access_token;
+                    createGoogleDoc();
+                }
+                
               })
-              .catch(error => console.error(error));
+              .catch(error => {console.error(error)
+                console.log('error is '+JSON.stringify(error))
+              });
         }
+
+        function createGoogleDoc(){
+            console.log('in create Google Doc');
+            let endpoint = 'https://docs.googleapis.com/v1/documents';
+            let reqBody = {
+                title: 'API Created Doc'
+            }
+            fetch(endpoint,{
+                method: "POST",
+                headers:{
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(reqBody)
+            })
+            .then((data)=>data.json())
+            .then(info=>{
+                console.log('info is '+JSON.stringify(info));
+            })
+            .catch(error=>{
+                console.log('error is '+error);
+            })
+        }
+
 
         async function getAuthCode() {
             // Request authorization code and obtain user consent
