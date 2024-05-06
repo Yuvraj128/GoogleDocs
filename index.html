@@ -207,6 +207,7 @@
                 // Store access token and potentially refresh token securely
                 console.log('Access Token:'+ JSON.stringify(data));
                 if(data.access_token!=='undefined'){
+                    console.log('access token is '+data.access_token);
                     token = data.access_token;
                     createGoogleDoc();
                 }
@@ -218,7 +219,7 @@
         }
 
         function createGoogleDoc(){
-            console.log('in create Google Doc');
+            console.log('in create Google Doc access token is '+token);
             let endpoint = 'https://docs.googleapis.com/v1/documents';
             let reqBody = {
                 title: 'API Created Doc'
