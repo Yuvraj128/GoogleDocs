@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Doc Integration</title>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" onload="initClient()" async defer></script>
     <style>
         *{
             margin: 0;
@@ -142,9 +142,9 @@
                 <button id="submit-btn" onclick="getGoogleDoc('false')">Get Google Doc</button>
             </div>
             <p style="text-align: center;margin: 20px 0;">Or</p>
-            <div style="display: none;">
+            <div>
                 <p style="margin-bottom: 7px;">Create Google Doc</p>
-                <button id="submit-btn" onclick="createGoogleDoc()">Login</button>
+                <button id="submit-btn" onclick="getAuthCode()">Get Auth Code</button>
             </div>
         </div>
     </div>
@@ -160,42 +160,35 @@
             }
         }
 
-        // Client ID and API key from the Developer Console
-        const CLIENT_ID = '795383790576-82j4h3lim7gh7h0l4pt17f54ba3eurjr.apps.googleusercontent.com';
-        //const API_KEY = 'YOUR_API_KEY';
-
-        // Array of API discovery doc URLs for APIs used by the quickstart
-        const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/docs/v1/rest"];
-
-        // Authorization scopes required by the API; multiple scopes can be included, separated by spaces.
-        const SCOPES = 'https://www.googleapis.com/auth/documents';
-
-        // Function to handle authentication and create a new Google Docs document
-        function createGoogleDoc() {
-            gapi.load('client:auth2', () => {
-                gapi.client.init({
-                    //apiKey: API_KEY,
-                    clientId: CLIENT_ID,
-                    discoveryDocs: DISCOVERY_DOCS,
-                    scope: SCOPES
-                }).then(() => {
-                    return gapi.auth2.getAuthInstance().signIn();
-                }).then(() => {
-                    // Create a new Google Docs document
-                    return gapi.client.docs.documents.create({
-                        title: 'My Document'
-                    });
-                }).then(response => {
-                    const docId = response.result.documentId;
-                    console.log('Document created. ID:'+ docId);
-                    alert('Document created successfully! Document ID: ' + docId);
-                }).catch(error => {
-                    console.error('Error creating document:'+ JSON.stringify(error));
-                    alert('Error creating document. Please check the console for details.');
-                });
+        var client;
+        function initClient() {
+            client = google.accounts.oauth2.initCodeClient({
+            client_id: '795383790576-82j4h3lim7gh7h0l4pt17f54ba3eurjr.apps.googleusercontent.com',
+            scope: 'https://www.googleapis.com/auth/documents',
+            ux_mode: 'popup',
+            callback: (response) => {
+                var code_receiver_uri = 'https://www.google.com';
+                // Send auth code to your backend platform
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', code_receiver_uri, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = function() {
+                console.log('Signed in as: ' + xhr.responseText);
+                };
+                xhr.send('code=' + response.code);
+                // After receipt, the code is exchanged for an access token and
+                // refresh token, and the platform then updates this web app
+                // running in user's browser with the requested calendar info.
+            },
             });
         }
+        function getAuthCode() {
+            // Request authorization code and obtain user consent
+            client.requestCode();
+        }
 
+        
         let getGoogleDoc = (val)=>{
             if(val==='false'){
                 docUrl = document.getElementById('fileUrl').value;
